@@ -15,9 +15,9 @@ namespace WeatherApp1.Controllers
     public class WeatherController : Controller
     {
         public static IConfigurationRoot Configuration;
-        // GET api/values/5
-        [HttpGet("forecast/{city}")]
-        public IActionResult ForecastByCity(string city, string searchType)
+        // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/forecast?city=6548737
+        [HttpGet("forecast")]
+        public IActionResult Forecast(string city)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -25,8 +25,8 @@ namespace WeatherApp1.Controllers
 
             Configuration = builder.Build();
             var apiKey = Configuration["apiKey"];
-            string cityCodeLeipzig = "6548737";
-            HttpWebRequest apiRequest = WebRequest.Create("http://api.openweathermap.org/data/2.5/weather?id=" + city + "&appid=" + apiKey + "&units=metric") as HttpWebRequest;
+            //HttpWebRequest apiRequest = WebRequest.Create("http://api.openweathermap.org/data/2.5/weather?id=" + city + "&appid=" + apiKey + "&units=metric") as HttpWebRequest;
+            HttpWebRequest apiRequest = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast?id=" + city + "&appid=" + apiKey + "&units=metric") as HttpWebRequest;
 
             string apiResponse = "";
             using (HttpWebResponse response = apiRequest.GetResponse() as HttpWebResponse)
