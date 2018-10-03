@@ -25,8 +25,27 @@ namespace WeatherApp1.Controllers
 
             Configuration = builder.Build();
             var apiKey = Configuration["apiKey"];
-            //HttpWebRequest apiRequest = WebRequest.Create("http://api.openweathermap.org/data/2.5/weather?id=" + city + "&appid=" + apiKey + "&units=metric") as HttpWebRequest;
-            HttpWebRequest apiRequest = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast?id=" + city + "&appid=" + apiKey + "&units=metric") as HttpWebRequest;
+            string forecast = "forecast";
+            return Content(CallApi(apiKey, city, forecast));
+        }
+
+        // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/weather?city=6548737
+        [HttpGet("weather")]
+        public IActionResult Weather(string city)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
+            var apiKey = Configuration["apiKey"];
+            string weather = "weather";
+            return Content(CallApi(apiKey, city, weather));
+        }
+
+
+        public string CallApi(string apiKey, string city, string type) {
+            HttpWebRequest apiRequest = WebRequest.Create("http://api.openweathermap.org/data/2.5/" + type + "?id=" + city + "&appid=" + apiKey + "&units=metric") as HttpWebRequest;
 
             string apiResponse = "";
             using (HttpWebResponse response = apiRequest.GetResponse() as HttpWebResponse)
@@ -34,8 +53,7 @@ namespace WeatherApp1.Controllers
                 StreamReader reader = new StreamReader(response.GetResponseStream());
                 apiResponse = reader.ReadToEnd();
             }
-
-            return Content(apiResponse);
+            return apiResponse;
         }
     }
 }
