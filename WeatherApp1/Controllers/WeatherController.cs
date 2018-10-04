@@ -19,34 +19,20 @@ namespace WeatherApp1.Controllers
         [HttpGet("forecast")]
         public IActionResult Forecast(string city)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
-            var apiKey = Configuration["apiKey"];
             string forecast = "forecast";
-            return Content(CallApi(apiKey, city, forecast));
+            return Content(CallApi(getApiKey(), city, forecast));
         }
 
         // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/weather?city=6548737
         [HttpGet("weather")]
         public IActionResult Weather(string city)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
-            var apiKey = Configuration["apiKey"];
             string weather = "weather";
-            return Content(CallApi(apiKey, city, weather));
+            return Content(CallApi(getApiKey(), city, weather));
         }
-
 
         public string CallApi(string apiKey, string city, string type) {
             HttpWebRequest apiRequest = WebRequest.Create("http://api.openweathermap.org/data/2.5/" + type + "?id=" + city + "&appid=" + apiKey + "&units=metric") as HttpWebRequest;
-
             string apiResponse = "";
             using (HttpWebResponse response = apiRequest.GetResponse() as HttpWebResponse)
             {
@@ -54,6 +40,15 @@ namespace WeatherApp1.Controllers
                 apiResponse = reader.ReadToEnd();
             }
             return apiResponse;
+        }
+        public string getApiKey()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            Configuration = builder.Build();
+            var apiKey = Configuration["apiKey"];
+            return apiKey;
         }
     }
 }
