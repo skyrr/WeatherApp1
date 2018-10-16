@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using WeatherApp1.Models;
 
 namespace WeatherApp1.Controllers
 {
@@ -29,6 +31,21 @@ namespace WeatherApp1.Controllers
         {
             string weather = "weather";
             return Content(CallApi(getApiKey(), city, weather));
+        }
+
+        // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/readjson
+        [HttpGet("readjson")]
+        public IActionResult readjson(string city)
+        {
+            string cits = "";
+            using (StreamReader r = new StreamReader(@"C:\work\city.list.json"))
+            {
+                string json = r.ReadToEnd();
+                List<Cities> cities = JsonConvert.DeserializeObject<List<Cities>>(json);
+                cits = JsonConvert.SerializeObject(cities);
+            }
+
+            return Content(cits);
         }
 
         public string CallApi(string apiKey, string city, string type) {
