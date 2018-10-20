@@ -16,6 +16,7 @@ namespace WeatherApp1.Controllers
     [Route("api/Weather")]
     public class WeatherController : Controller
     {
+        public List<DECities> dECities = new List<DECities>();
         public static IConfigurationRoot Configuration;
         // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/forecast?city=6548737
         [HttpGet("forecast")]
@@ -33,19 +34,30 @@ namespace WeatherApp1.Controllers
             return Content(CallApi(getApiKey(), city, weather));
         }
 
-        // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/readjson
-        [HttpGet("readjson")]
+        // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/deCitiesList
+        [HttpGet("deCitiesList")]
         public IActionResult readjson(string city)
         {
             string cits = "";
+            string decits = "";
             using (StreamReader r = new StreamReader(@"C:\work\city.list.json"))
             {
                 string json = r.ReadToEnd();
                 List<Cities> cities = JsonConvert.DeserializeObject<List<Cities>>(json);
+                for (int i = 0; i < cities.Count; i++)
+                {
+                    Cities item = cities[i];
+                    if (item.country == "DE") {
+                        dECities.Add(new DECities() { id = item.id, name = item.name});
+                    }
+                }
                 cits = JsonConvert.SerializeObject(cities);
+                //dECities = JsonConvert.DeserializeObject<List<DECities>>(json);
+                decits = JsonConvert.SerializeObject(dECities);
             }
 
-            return Content(cits);
+            //return Content(cits);
+            return Content(decits);
         }
 
         public string CallApi(string apiKey, string city, string type) {

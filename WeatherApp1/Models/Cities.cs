@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,4 +19,10 @@ namespace WeatherApp1.Models
         public string lon { get; set; }
         public string lat { get; set; }
     }
+    public class DECities
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+    }
+
 }
