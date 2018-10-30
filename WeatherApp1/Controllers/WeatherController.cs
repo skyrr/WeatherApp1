@@ -21,6 +21,7 @@ namespace WeatherApp1.Controllers
         public List<DECities> dE = new List<DECities>();
         public static IConfigurationRoot Configuration;
         // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/forecast?city=6548737
+        //weather forecast by city index
         [HttpGet("forecast")]
         public IActionResult Forecast(string city)
         {
@@ -29,6 +30,7 @@ namespace WeatherApp1.Controllers
         }
 
         // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/weather?city=6548737
+        //current weather by city index
         [HttpGet("weather")]
         public IActionResult Weather(string city)
         {
@@ -37,6 +39,7 @@ namespace WeatherApp1.Controllers
         }
 
         // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/allCities
+        //getting cities to file
         [HttpGet("allCities")]
         public IActionResult allCities(string city)
         {
@@ -52,6 +55,7 @@ namespace WeatherApp1.Controllers
         }
 
         // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/deCitiesList
+        //cities of Germany to file
         [HttpGet("deCitiesList")]
         public IActionResult deCitiesList(string city)
         {
@@ -70,17 +74,14 @@ namespace WeatherApp1.Controllers
                     }
                 }
                 cits = JsonConvert.SerializeObject(cities);
-                //dECities = JsonConvert.DeserializeObject<List<DECities>>(json);
                 decits = JsonConvert.SerializeObject(dECities);
-            }
-            
-            //write string to file
-            //System.IO.File.WriteAllText(@"C:\work\decity.list.json", decits);
-            //return Content(cits);
+            }   
             return Content(decits);
         }
 
         // GET: api/authors/search?namelike=th http://localhost:51262/api/weather/deCity?city=Leipzig
+        // filtering cities list by city name
+        // returns list of cities that has in it's name substring from frontend
         [HttpGet("deCity")]
         public IActionResult deCity(string city)
         {
@@ -99,14 +100,8 @@ namespace WeatherApp1.Controllers
                         dECities.Add(new DECities() { id = item.id, name = item.name });
                     }
                 }
-                //cits = JsonConvert.SerializeObject(dECities);
-                //dECities = JsonConvert.DeserializeObject<List<DECities>>(json);
                 decits = JsonConvert.SerializeObject(dECities);
             }
-            
-            //write string to file
-            //System.IO.File.WriteAllText(@"C:\work\decity.list.json", decits);
-            //return Content(cits);
             return Content(decits);
         }
 
