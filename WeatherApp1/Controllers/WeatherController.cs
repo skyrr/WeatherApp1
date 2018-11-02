@@ -61,7 +61,7 @@ namespace WeatherApp1.Controllers
         {
             string cits = "";
             string decits = "";
-            using (StreamReader r = new StreamReader(@"C:\work\city.list.json"))
+            using (StreamReader r = new StreamReader("city.list.json"))
             {
                 string json = r.ReadToEnd();
                 List<Cities> cities = JsonConvert.DeserializeObject<List<Cities>>(json);
@@ -87,7 +87,7 @@ namespace WeatherApp1.Controllers
         {
             string cits = "";
             string decits = "";
-            using (StreamReader r = new StreamReader(@"C:\work\decity.list.json"))
+            using (StreamReader r = new StreamReader("decity.list.json"))
             {
                 string json = r.ReadToEnd();
                 List<DECities> decities = JsonConvert.DeserializeObject<List<DECities>>(json);
